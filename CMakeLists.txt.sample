@@ -1,0 +1,48 @@
+########################################################################
+# setup project
+########################################################################
+cmake_minimum_required(VERSION 2.8)
+project(STM32)
+
+########################################################################
+# setup helpers
+########################################################################
+# import helpers
+include(mcutk/helpers.cmake)
+
+# default to just fit
+set(GEN_OUTPUTS_BIN_SIZE 0)
+
+# select JTAG target name
+JTAG_TARGET(stm32f2x)
+
+########################################################################
+# compiler flags
+########################################################################
+# default CFLAGS
+set(
+    CMAKE_C_FLAGS
+    "-mcpu=cortex-m3 -mthumb -Wall -fno-builtin -nostartfiles -nostdlib -T../src/linkerscript/stm32_flash.ld"
+)
+
+########################################################################
+# DEBUG or RELEASE
+########################################################################
+# choose either build type
+set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_BUILD_TYPE Release)
+
+# CFLAGS for Debug
+set(CMAKE_C_FLAGS_DEBUG "-gdwarf-2")
+if (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
+    add_definitions(-DCONFIG_DEBUG)
+endif (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
+
+# CFLAGS for RELEASE
+set(CMAKE_C_FLAGS_RELEASE "-Os -fno-common -fomit-frame-pointer -ffunction-sections -Wl,--gc-sections")
+
+########################################################################
+# project targets
+########################################################################
+add_custom_target(ch.elf)
+GEN_OUTPUTS(ch.elf)
