@@ -67,7 +67,7 @@ macro(GEN_OUTPUTS target)
 	)
 	#add a top level target for output files
 	add_custom_target(
-	    ${name}_outputs ALL DEPENDS ${name}_size ${name}.map ${name}.bin ${name}.ihx ${name}.dump ${name}.rom
+	    ${name}_outputs ALL DEPENDS ${name}_size #${name}.map ${name}.bin ${name}.ihx ${name}.dump ${name}.rom
 	)
 	#commands to debug
 	add_custom_target(
@@ -79,12 +79,6 @@ macro(GEN_OUTPUTS target)
 		cgdb_${target}
 		DEPENDS ${target}
 		COMMAND cgdb -d ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/debug.gdb
-	)
-	#command to load in RAM and run
-	add_custom_target(
-		stm32_sram_${target}
-		DEPENDS ${target}
-		COMMAND ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/stm32_sram.gdb
 	)
 	#commands to flash
     foreach (interface jlink openjtag)
@@ -100,4 +94,10 @@ macro(GEN_OUTPUTS target)
                                -c 'shutdown'
 		)
     endforeach (interface)
+	#command to load in RAM and run
+	add_custom_target(
+		sram_stlink_${target}
+		DEPENDS ${target}
+		COMMAND st-util -p 3333 & ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/sram_stlink.gdb
+	)
 endmacro(GEN_OUTPUTS)
