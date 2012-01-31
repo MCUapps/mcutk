@@ -1,6 +1,6 @@
 # README
 
-This folder contains supporting scripts for embedded ARM development with CMake and OpenOCD.
+This repository contains some supporting scripts for embedded ARM development with CMake and emulators with GDB servers embedded, like OpenOCD. And it's BSD licensed.
 
 ## Installation
 
