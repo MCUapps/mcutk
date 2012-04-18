@@ -22,9 +22,11 @@ No matter whether you are developing your projects with CMake or not, you can al
 
 - target_outputs -- generates size statics, ROM HEX, map file, program dump ... etc from ELF
 - jlink -- simply type `make jlink` to launch OpenOCD's gdbserver with jlink interface. 
-- gdb_target.elf -- connect gdbserver at localhost port 3333 for debugging.
-- cgdb_target.elf -- connect gdbserver at localhost port 3333 for debugging, but with `cgdb`
-- stm32_ram_target.elf -- run target.elf in SRAM. Note you must use linkscript configured for SRAM and remap NVIC's vectors base.
+- openjtag -- simply type `make jlink` to launch OpenOCD's gdbserver with openjtag interface. 
+- stlink -- simply type `make jlink` to ST's st-util for ST-LINK 
+- gdb_[target].elf -- connect gdbserver at localhost port 3333 for debugging.
+- cgdb_[target].elf -- connect gdbserver at localhost port 3333 for debugging, but with `cgdb`
+- sram_[target].elf -- run target.elf in SRAM. Note you must use linkscript configured for SRAM and remap NVIC's vectors base in your firmware
 
-Just extend the file `helpers.cmake` to fit your needs.
+Feel free to extend the file `helpers.cmake` to fit your own needs.
 

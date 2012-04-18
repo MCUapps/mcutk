@@ -69,18 +69,27 @@ macro(GEN_OUTPUTS target)
 	add_custom_target(
 	    ${name}_outputs ALL DEPENDS ${name}_size #${name}.map ${name}.bin ${name}.ihx ${name}.dump ${name}.rom
 	)
+
 	#commands to debug
 	add_custom_target(
 		gdb_${target}
 		DEPENDS ${target}
-		COMMAND ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/debug.gdb
+		COMMAND ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/cortex_m3.gdb
 	)
+	#example commands to debug using cgdb
 	add_custom_target(
 		cgdb_${target}
 		DEPENDS ${target}
-		COMMAND cgdb -d ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/debug.gdb
+		COMMAND cgdb -d ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/cortex_m3.gdb
 	)
-	#commands to flash
+	#command to load in RAM and run
+	add_custom_target(
+		sram_${target}
+		DEPENDS ${target}
+		COMMAND ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/sram_cortex_m3.gdb
+	)
+
+	#commands to flash the device
     foreach (interface jlink openjtag)
 		add_custom_target(
 			flash_${interface}_${target}
@@ -94,10 +103,4 @@ macro(GEN_OUTPUTS target)
                                -c 'shutdown'
 		)
     endforeach (interface)
-	#command to load in RAM and run
-	add_custom_target(
-		sram_stlink_${target}
-		DEPENDS ${target}
-		COMMAND st-util -p 3333 & ${GDB} ${target} -x ${CMAKE_SOURCE_DIR}/mcutk/sram_stlink.gdb
-	)
 endmacro(GEN_OUTPUTS)

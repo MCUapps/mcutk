@@ -13,13 +13,13 @@ include(mcutk/helpers.cmake)
 # default to just fit
 set(GEN_OUTPUTS_BIN_SIZE 0)
 
-# select JTAG target name
-JTAG_TARGET(stm32f2x)
+# set OpenOCD's target name
+JTAG_TARGET(stm32f1x)
 
 ########################################################################
 # compiler flags
 ########################################################################
-# default CFLAGS
+# default CFLAGS, MUST BE MODIFIED TO FIT YOUR OWN NEEDS.
 set(
     CMAKE_C_FLAGS
     "-mcpu=cortex-m3 -mthumb -Wall -fno-builtin -nostartfiles -nostdlib -T../src/linkerscript/stm32_flash.ld"
@@ -44,5 +44,16 @@ set(CMAKE_C_FLAGS_RELEASE "-Os -fno-common -fomit-frame-pointer -ffunction-secti
 ########################################################################
 # project targets
 ########################################################################
-add_custom_target(ch.elf)
+
+# This example target invokes to source directory's Makefile to build 
+add_custom_target(build_ch ALL
+  COMMAND make
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+# Although the above target would always be built, this ensure the dependency order.
+add_custom_target(ch.elf
+  DEPENDS build_ch
+)
+
 GEN_OUTPUTS(ch.elf)
