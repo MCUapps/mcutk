@@ -24,9 +24,9 @@ No matter whether you are developing your projects with CMake or not, you can al
 - jlink -- simply type `make jlink` to launch OpenOCD's gdbserver with jlink interface. 
 - openjtag -- simply type `make jlink` to launch OpenOCD's gdbserver with openjtag interface. 
 - stlink -- simply type `make jlink` to ST's st-util for ST-LINK 
-- gdb_[target].elf -- connect gdbserver at localhost port 3333 for debugging.
-- cgdb_[target].elf -- connect gdbserver at localhost port 3333 for debugging, but with `cgdb`
-- sram_[target].elf -- run target.elf in SRAM. Note you must use linkscript configured for SRAM and remap NVIC's vectors base in your firmware
+- gdb_[target].elf -- connect to gdbserver running at localhost port 3333 for debugging.
+- cgdb_[target].elf -- connect to gdbserver running at localhost port 3333 for debugging, but with `cgdb` client (gdb's TUI).
+- sram_[target].elf -- connect to gdbserver running at localhost port 3333 for debugging, set to be executed in SRAM. Note you must use linkscript configured for SRAM, and DO remap NVIC's vectors base in your firmware.
 
 Feel free to extend the file `helpers.cmake` to fit your own needs.
 
