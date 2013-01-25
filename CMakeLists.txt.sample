@@ -21,8 +21,13 @@ JTAG_TARGET(stm32f1x)
 ########################################################################
 # default CFLAGS, MUST BE MODIFIED TO FIT YOUR OWN NEEDS.
 set(
-    CMAKE_C_FLAGS
-    "-mcpu=cortex-m3 -mthumb -Wall -fno-builtin -nostartfiles -nostdlib -T../src/linkerscript/stm32_flash.ld"
+  CMAKE_C_FLAGS
+  "-mcpu=cortex-m3 -mthumb -Wall -O2"
+)
+
+set(
+  CMAKE_EXE_LINKER_FLAGS
+  "-fno-builtin -fno-common -nostartfiles -nostdlib -fomit-frame-pointer -ffunction-sections -Wl,--gc-sections -T../src/linkerscript/stm32_flash.ld"
 )
 
 ########################################################################
@@ -35,11 +40,11 @@ set(CMAKE_BUILD_TYPE Debug)
 # CFLAGS for Debug
 set(CMAKE_C_FLAGS_DEBUG "-gdwarf-2")
 if (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
-    add_definitions(-DCONFIG_DEBUG)
+  add_definitions(-DCONFIG_DEBUG)
 endif (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
 
 # CFLAGS for RELEASE
-set(CMAKE_C_FLAGS_RELEASE "-Os -fno-common -fomit-frame-pointer -ffunction-sections -Wl,--gc-sections")
+set(CMAKE_C_FLAGS_RELEASE "-Os")
 
 ########################################################################
 # project targets

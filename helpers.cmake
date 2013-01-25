@@ -21,8 +21,7 @@ macro(JTAG_TARGET name)
 			COMMAND echo 'init; reset reset' |
 				${OPENOCD} -f ${CMAKE_SOURCE_DIR}/mcutk/${interface}.cfg
                            -f target/${TARGET_NAME}.cfg
-                           -c 'init'
-                           -c 'reset init'
+                           -f ${CMAKE_SOURCE_DIR}/mcutk/gdb.cfg | grep -v 'libusb'
 		)
     endforeach (interface)
 endmacro(JTAG_TARGET)
@@ -96,11 +95,11 @@ macro(GEN_OUTPUTS target)
 			DEPENDS ${target}
 			COMMAND ${OPENOCD} -f ${CMAKE_SOURCE_DIR}/mcutk/${interface}.cfg
                                -f target/${TARGET_NAME}.cfg
+                               -f ${CMAKE_SOURCE_DIR}/mcutk/gdb.cfg
                                -c 'flash write_image erase ${target} 0x00000000 elf'
                                -c 'verify_image ${target} 0x00000000 elf'
-                               -c 'sleep 100'
                                -c 'reset run'
-                               -c 'shutdown'
+                               -c 'shutdown' | grep -v 'libusb'
 		)
     endforeach (interface)
 endmacro(GEN_OUTPUTS)
