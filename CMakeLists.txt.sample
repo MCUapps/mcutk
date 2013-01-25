@@ -27,7 +27,7 @@ set(
 
 set(
   CMAKE_EXE_LINKER_FLAGS
-  "-nostartfiles -nostdlib -Wl,--gc-sections -T../src/linkerscript/stm32_flash.ld"
+  "-nostdlib -lgcc -Wl,--gc-sections -T../linkerscript/stm32_flash.ld"
 )
 
 ########################################################################
