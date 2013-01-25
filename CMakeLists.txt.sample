@@ -22,12 +22,12 @@ JTAG_TARGET(stm32f1x)
 # default CFLAGS, MUST BE MODIFIED TO FIT YOUR OWN NEEDS.
 set(
   CMAKE_C_FLAGS
-  "-mcpu=cortex-m3 -mthumb -Wall -O2"
+  "-mcpu=cortex-m3 -mthumb -Wall -fno-builtin -fno-common -fomit-frame-pointer -ffunction-sections -O2"
 )
 
 set(
   CMAKE_EXE_LINKER_FLAGS
-  "-fno-builtin -fno-common -nostartfiles -nostdlib -fomit-frame-pointer -ffunction-sections -Wl,--gc-sections -T../src/linkerscript/stm32_flash.ld"
+  "-nostartfiles -nostdlib -Wl,--gc-sections -T../src/linkerscript/stm32_flash.ld"
 )
 
 ########################################################################
