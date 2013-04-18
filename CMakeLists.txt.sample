@@ -3,6 +3,8 @@
 ########################################################################
 cmake_minimum_required(VERSION 2.8)
 project(STM32)
+enable_language(C ASM)
+
 
 ########################################################################
 # setup helpers
@@ -25,6 +27,9 @@ set(
   "-mcpu=cortex-m3 -mthumb -Wall -fno-builtin -fno-common -fomit-frame-pointer -ffunction-sections -O2"
 )
 
+SET(ASM_OPTIONS "-x assembler-with-cpp")
+SET(CMAKE_ASM_FLAGS "${CFLAGS} ${ASM_OPTIONS}" )
+
 set(
   CMAKE_EXE_LINKER_FLAGS
   "-nostdlib -lgcc -Wl,--gc-sections -T../linkerscript/stm32_flash.ld"
@@ -37,13 +42,15 @@ set(
 set(CMAKE_BUILD_TYPE Debug)
 #set(CMAKE_BUILD_TYPE Release)
 
-# CFLAGS for Debug
+# Debug
 set(CMAKE_C_FLAGS_DEBUG "-gdwarf-2")
 if (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
   add_definitions(-DCONFIG_DEBUG)
 endif (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
 
-# CFLAGS for RELEASE
+set(CMAKE_ASM_FLAGS_DEBUG "-gstabs")
+
+# RELEASE
 set(CMAKE_C_FLAGS_RELEASE "-Os")
 
 ########################################################################
